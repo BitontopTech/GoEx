@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	VERSION = 1
+	VERSION = 2
 )
 
 type HuoBi_V2 struct {
