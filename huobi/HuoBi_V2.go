@@ -29,7 +29,7 @@ type response struct {
 }
 
 func NewV2(httpClient *http.Client, accessKey, secretKey, clientId string) *HuoBi_V2 {
-	return &HuoBi_V2{httpClient, clientId, "https://be.huobi.com", accessKey, secretKey}
+	return &HuoBi_V2{httpClient, clientId, "https://api.huobi.pro", accessKey, secretKey}
 
 }
 
@@ -168,10 +168,24 @@ func (hbV2 *HuoBi_V2) LimitBuy(amount, price string, currency CurrencyPair) (*Or
 }
 
 func (hbV2 *HuoBi_V2) LimitSell(amount, price string, currency CurrencyPair) (*Order, error) {
-	orderId, err := hbV2.placeOrder(amount, price, currency, "sell-limit")
-	if err != nil {
-		return nil, err
+	var orderId string
+	var err error
+	attemp := 0
+
+	for {
+		attemp = attemp + 1
+		orderId, err = hbV2.placeOrder(amount, price, currency, "sell-limit")
+
+		if err != nil {
+			log.Printf("attemp-%d: %v", attemp, err)
+			if attemp > 10 {
+				return nil, err
+			}
+		} else {
+			break
+		}
 	}
+
 	return &Order{
 		Currency: currency,
 		OrderID:  ToInt(orderId),
