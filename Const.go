@@ -1,7 +1,5 @@
 package goex
 
-import "github.com/BitontopTech/GoEx/huobi"
-
 type TradeSide int
 
 const (
@@ -91,7 +89,3 @@ const (
 	GDAX        = "gdax.com"
 	WEX_NZ      = "wex.nz"
 )
-
-func GetVersion_HuoBiProAPI() int {
-	return huobi.VERSION
-}
