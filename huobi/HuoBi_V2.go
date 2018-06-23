@@ -13,6 +13,10 @@ import (
 	. "github.com/BitontopTech/GoEx"
 )
 
+const (
+	VERSION = 1
+)
+
 type HuoBi_V2 struct {
 	httpClient *http.Client
 	accountId,
