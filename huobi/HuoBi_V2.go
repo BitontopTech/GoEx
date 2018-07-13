@@ -4,12 +4,17 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
 
 	. "github.com/BitontopTech/GoEx"
+)
+
+const (
+	VERSION = 3
 )
 
 type HuoBi_V2 struct {
@@ -154,9 +159,23 @@ func (hbV2 *HuoBi_V2) placeOrder(amount, price string, pair CurrencyPair, orderT
 }
 
 func (hbV2 *HuoBi_V2) LimitBuy(amount, price string, currency CurrencyPair) (*Order, error) {
-	orderId, err := hbV2.placeOrder(amount, price, currency, "buy-limit")
-	if err != nil {
-		return nil, err
+
+	var orderId string
+	var err error
+	attemp := 0
+
+	for {
+		attemp = attemp + 1
+		orderId, err = hbV2.placeOrder(amount, price, currency, "buy-limit")
+
+		if err != nil {
+			log.Printf("attemp-%d: %v", attemp, err)
+			if attemp > 10 {
+				return nil, err
+			}
+		} else {
+			break
+		}
 	}
 	return &Order{
 		Currency: currency,
@@ -168,10 +187,24 @@ func (hbV2 *HuoBi_V2) LimitBuy(amount, price string, currency CurrencyPair) (*Or
 }
 
 func (hbV2 *HuoBi_V2) LimitSell(amount, price string, currency CurrencyPair) (*Order, error) {
-	orderId, err := hbV2.placeOrder(amount, price, currency, "sell-limit")
-	if err != nil {
-		return nil, err
+	var orderId string
+	var err error
+	attemp := 0
+
+	for {
+		attemp = attemp + 1
+		orderId, err = hbV2.placeOrder(amount, price, currency, "sell-limit")
+
+		if err != nil {
+			log.Printf("attemp-%d: %v", attemp, err)
+			if attemp > 10 {
+				return nil, err
+			}
+		} else {
+			break
+		}
 	}
+
 	return &Order{
 		Currency: currency,
 		OrderID:  ToInt(orderId),
