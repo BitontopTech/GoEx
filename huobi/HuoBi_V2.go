@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -29,7 +28,8 @@ type response struct {
 }
 
 func NewV2(httpClient *http.Client, accessKey, secretKey, clientId string) *HuoBi_V2 {
-	return &HuoBi_V2{httpClient, clientId, "https://be.huobi.com", accessKey, secretKey}
+	// return &HuoBi_V2{httpClient, clientId, "https://be.huobi.com", accessKey, secretKey}
+	return &HuoBi_V2{httpClient, clientId, "https://api.huobi.pro", accessKey, secretKey}
 
 }
 
@@ -53,7 +53,7 @@ func (hbV2 *HuoBi_V2) GetAccountId() (string, error) {
 	accountIdMap := data[0].(map[string]interface{})
 	hbV2.accountId = fmt.Sprintf("%.f", accountIdMap["id"].(float64))
 
-	log.Println(respmap)
+	// log.Println(respmap)
 	return hbV2.accountId, nil
 }
 
