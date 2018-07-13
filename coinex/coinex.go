@@ -241,8 +241,8 @@ func (coinex *CoinEx) doRequest(method, uri string, params *url.Values) (map[str
 		paramStr = string(jsonData)
 	}
 
-	log.Printf("reqUrl:%v", reqUrl)
-	log.Printf("paramStr:%v", paramStr)
+	// log.Printf("reqUrl:%v", reqUrl)
+	// log.Printf("paramStr:%v", paramStr)
 
 	resp, err := NewHttpRequest(coinex.httpClient, method, reqUrl, paramStr, headermap)
 
